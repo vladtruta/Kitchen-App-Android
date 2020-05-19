@@ -29,11 +29,11 @@
                 android:id="@+id/course_name_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:lines="2"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textAppearance="?attr/textAppearanceHeadline4"
                 app:autoSizeTextType="uniform"
                 tools:text="Roasted pork tenderloin" />

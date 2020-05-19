@@ -14,7 +14,8 @@
             android:id="@+id/orders_mtb"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/orders_items">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,8 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="?attr/colorPrimary"
-            android:orientation="vertical"
             android:elevation="10dp"
+            android:orientation="vertical"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/list_item_order" />

@@ -28,4 +28,9 @@
         android:textAppearance="?attr/textAppearanceHeadline6"
         tools:text="Table 1" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/dividerHorizontal" />
+
 </LinearLayout>
