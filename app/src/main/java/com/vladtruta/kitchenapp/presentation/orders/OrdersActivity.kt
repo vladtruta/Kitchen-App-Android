@@ -1,13 +1,13 @@
-package com.vladtruta.kitchenapp.presentation
+package com.vladtruta.kitchenapp.presentation.orders
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.vladtruta.kitchenapp.R
 
-class MainActivity : AppCompatActivity() {
+class OrdersActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_orders)
     }
 }

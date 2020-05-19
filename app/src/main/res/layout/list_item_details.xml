@@ -39,7 +39,7 @@
                 tools:text="Roasted pork tenderloin" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/course_price_tv"
+                android:id="@+id/course_quantity_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="?attr/colorSecondaryVariant"

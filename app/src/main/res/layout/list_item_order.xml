@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/order_number_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -17,7 +18,7 @@
         tools:text="Order #546" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/category_tv"
+        android:id="@+id/table_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
