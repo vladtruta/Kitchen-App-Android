@@ -42,12 +42,11 @@
                 android:id="@+id/course_quantity_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="?attr/colorSecondaryVariant"
+                android:background="?attr/colorSecondary"
                 android:gravity="center"
                 android:maxLines="1"
                 android:padding="16dp"
                 android:textAppearance="?attr/textAppearanceHeadline4"
-                android:textColor="@android:color/white"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
                 tools:text="x5" />

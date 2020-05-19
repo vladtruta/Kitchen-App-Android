@@ -10,5 +10,6 @@ data class MenuCourse(
     val description: String,
     val photoUrl: String,
     val portionSize: String,
-    val price: Int
+    val price: Int,
+    val id: Int
 ) : Parcelable

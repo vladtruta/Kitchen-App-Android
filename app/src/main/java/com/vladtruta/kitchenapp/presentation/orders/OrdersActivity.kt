@@ -1,7 +1,9 @@
 package com.vladtruta.kitchenapp.presentation.orders
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.vladtruta.kitchenapp.R
 import com.vladtruta.kitchenapp.databinding.ActivityOrdersBinding
 import com.vladtruta.kitchenapp.model.local.KitchenOrder
@@ -12,6 +14,7 @@ import com.vladtruta.kitchenapp.presentation.orders.adapter.TotalCoursesAdapter
 class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener {
 
     private lateinit var binding: ActivityOrdersBinding
+    private val viewModel by viewModels<OrdersViewModel>()
 
     private lateinit var ordersListAdapter: OrdersListAdapter
     private lateinit var orderDetailsAdapter: OrderDetailsAdapter
@@ -34,7 +37,14 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
     }
 
     private fun initObservers() {
+        viewModel.orders.observe(this, Observer {
+            ordersListAdapter.submitList(it)
+            viewModel.updateTotalCourses()
+        })
 
+        viewModel.totalCourses.observe(this, Observer {
+            totalCoursesAdapter.submitList(it)
+        })
     }
 
     private fun initActions() {
@@ -42,6 +52,6 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
     }
 
     override fun onOrderListItemClicked(kitchenOrder: KitchenOrder) {
-
+        orderDetailsAdapter.submitList(kitchenOrder.cartItems)
     }
 }

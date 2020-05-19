@@ -6,5 +6,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class CartItem(
     val menuCourse: MenuCourse,
-    val quantity: Int
+    val quantity: Int,
+    val id: Int
 ): Parcelable
