@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.vladtruta.kitchenapp.R
 import com.vladtruta.kitchenapp.databinding.ActivityOrdersBinding
 import com.vladtruta.kitchenapp.model.local.KitchenOrder
@@ -37,13 +38,17 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
     }
 
     private fun initObservers() {
-        viewModel.orders.observe(this, Observer {
+        viewModel.kitchenOrders.observe(this, Observer {
             ordersListAdapter.submitList(it)
             viewModel.updateTotalCourses()
         })
 
         viewModel.totalCourses.observe(this, Observer {
             totalCoursesAdapter.submitList(it)
+        })
+
+        viewModel._errorMessage.observe(this, Observer {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE).show()
         })
     }
 
