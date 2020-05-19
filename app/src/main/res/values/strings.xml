@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Kitchen App</string>
+    <string name="orders">Orders</string>
+    <string name="refresh">Refresh</string>
+    <string name="price_dollars">$%1$d</string>
+    <string name="quantity_placeholder">x%1$d</string>
+</resources>
