@@ -61,7 +61,7 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
 
         viewModel.refreshErrorMessage.observe(this, Observer {
             errorSnackbar = Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.refresh) { viewModel.triggerRefresh() }
+                .setAction(R.string.retry) { viewModel.triggerRefresh() }
             errorSnackbar?.show()
         })
 
