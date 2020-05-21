@@ -13,8 +13,11 @@ class OrdersViewModel : ViewModel() {
         private const val REFRESH_RETRY_DELAY_MS = 10_000L
     }
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> = _errorMessage
+    private val _refreshErrorMessage = MutableLiveData<String>()
+    val refreshErrorMessage: LiveData<String> = _refreshErrorMessage
+
+    private val _finishErrorMessage = MutableLiveData<String>()
+    val finishErrorMessage: LiveData<String> = _finishErrorMessage
 
     val kitchenOrders = liveData {
         while (true) {
@@ -69,7 +72,7 @@ class OrdersViewModel : ViewModel() {
                 RestaurantRepository.deleteOrder(kitchenOrder)
                 triggerRefresh()
             } catch (error: Exception) {
-                _errorMessage.value = error.message
+                _finishErrorMessage.value = error.message
             } finally {
                 _finishButtonEnabled.value = true
             }
@@ -80,7 +83,7 @@ class OrdersViewModel : ViewModel() {
         return try {
             RestaurantRepository.refreshOrders()
         } catch (error: Exception) {
-            _errorMessage.value = error.message
+            _refreshErrorMessage.value = error.message
             null
         }
     }

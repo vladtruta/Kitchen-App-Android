@@ -61,10 +61,14 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
             totalCoursesAdapter.submitList(it)
         })
 
-        viewModel.errorMessage.observe(this, Observer {
-            errorSnackbar = Snackbar.make(binding.finishEfab, it, Snackbar.LENGTH_INDEFINITE)
+        viewModel.refreshErrorMessage.observe(this, Observer {
+            errorSnackbar = Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.refresh) { viewModel.triggerRefresh() }
             errorSnackbar?.show()
+        })
+
+        viewModel.finishErrorMessage.observe(this, Observer {
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
         })
 
         viewModel.forceRefreshLoading.observe(this, Observer {
