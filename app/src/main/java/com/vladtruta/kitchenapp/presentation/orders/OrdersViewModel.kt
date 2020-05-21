@@ -4,10 +4,7 @@ import androidx.lifecycle.*
 import com.vladtruta.kitchenapp.data.model.local.CartItem
 import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
 import com.vladtruta.kitchenapp.repository.RestaurantRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class OrdersViewModel : ViewModel() {
     companion object {
@@ -25,7 +22,9 @@ class OrdersViewModel : ViewModel() {
 
     val kitchenOrders = liveData {
         while (true) {
-            emit(fetchOrders())
+            val orders = fetchOrders() ?: emptyList<KitchenOrder>()
+            updateTotalCourses(orders).join()
+            emit(orders)
             delay(REFRESH_RETRY_DELAY_MS)
         }
     }
@@ -45,14 +44,16 @@ class OrdersViewModel : ViewModel() {
     fun triggerRefresh(): Job {
         return viewModelScope.launch {
             _forceRefreshLoading.value = true
-            _kitchenOrdersForceRefresh.value = fetchOrders()
+            val orders = fetchOrders() ?: emptyList<KitchenOrder>()
+            updateTotalCourses(orders).join()
+            _kitchenOrdersForceRefresh.value = orders
             _forceRefreshLoading.value = false
         }
     }
 
-    fun updateTotalCourses() {
-        viewModelScope.launch(Dispatchers.Default) {
-            val totalCourses = (kitchenOrders.value?.flatMap { it.cartItems } ?: emptyList())
+    private fun updateTotalCourses(orders: List<KitchenOrder>): Job {
+        return viewModelScope.launch(Dispatchers.Default) {
+            val totalCourses = (orders.flatMap { it.cartItems })
                 .groupBy { it.menuCourse.id }
                 .values
                 .map {

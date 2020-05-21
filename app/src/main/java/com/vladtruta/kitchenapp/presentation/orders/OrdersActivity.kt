@@ -121,7 +121,6 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
                 ordersListAdapter.currentList[ordersListAdapter.checkedPosition]
             onOrderListItemClicked(clickedOrder)
         }
-        viewModel.updateTotalCourses()
     }
 
     private fun initActions() {
