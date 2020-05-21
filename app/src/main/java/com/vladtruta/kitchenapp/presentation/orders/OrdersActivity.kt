@@ -81,6 +81,7 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
     }
 
     private fun updateOrders(orders: List<KitchenOrder>?) {
+        // Orders are null when there's a network connection issue
         if (orders == null) {
             return
         } else {
