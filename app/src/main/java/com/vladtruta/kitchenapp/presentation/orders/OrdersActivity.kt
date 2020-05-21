@@ -77,7 +77,7 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
             }
         })
 
-        viewModel.forceRefreshLoading.observe(this, Observer {
+        viewModel.refreshLoading.observe(this, Observer {
             binding.loadingSrl.isRefreshing = it
         })
 

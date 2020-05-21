@@ -27,7 +27,7 @@ class OrdersViewModel : ViewModel() {
     val totalCourses: LiveData<List<CartItem>> = _totalCourses
 
     private val _refreshLoading = MutableLiveData(false)
-    val forceRefreshLoading: LiveData<Boolean> = _refreshLoading
+    val refreshLoading: LiveData<Boolean> = _refreshLoading
 
     private val _finishButtonEnabled = MutableLiveData(true)
     val finishButtonEnabled: LiveData<Boolean> = _finishButtonEnabled
