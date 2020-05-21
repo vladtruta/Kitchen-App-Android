@@ -5,6 +5,7 @@ import com.vladtruta.kitchenapp.data.model.local.CartItem
 import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
 import com.vladtruta.kitchenapp.repository.RestaurantRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -18,6 +19,9 @@ class OrdersViewModel : ViewModel() {
 
     private val _finishErrorMessage = MutableLiveData<String>()
     val finishErrorMessage: LiveData<String> = _finishErrorMessage
+
+    private val _finishOrderSuccessful = MutableLiveData<Boolean>()
+    val finishOrderSuccessful: LiveData<Boolean> = _finishOrderSuccessful
 
     val kitchenOrders = liveData {
         while (true) {
@@ -38,8 +42,8 @@ class OrdersViewModel : ViewModel() {
     private val _finishButtonEnabled = MutableLiveData(true)
     val finishButtonEnabled: LiveData<Boolean> = _finishButtonEnabled
 
-    fun triggerRefresh() {
-        viewModelScope.launch {
+    fun triggerRefresh(): Job {
+        return viewModelScope.launch {
             _forceRefreshLoading.value = true
             _kitchenOrdersForceRefresh.value = fetchOrders()
             _forceRefreshLoading.value = false
@@ -70,8 +74,10 @@ class OrdersViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 RestaurantRepository.deleteOrder(kitchenOrder)
-                triggerRefresh()
+                triggerRefresh().join()
+                _finishOrderSuccessful.value = true
             } catch (error: Exception) {
+                _finishOrderSuccessful.value = false
                 _finishErrorMessage.value = error.message
             } finally {
                 _finishButtonEnabled.value = true

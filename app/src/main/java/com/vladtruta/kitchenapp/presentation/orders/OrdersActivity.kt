@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.vladtruta.kitchenapp.R
@@ -71,6 +72,17 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
         })
 
+        viewModel.finishOrderSuccessful.observe(this, Observer {
+            if (it == true) {
+                ordersListAdapter.checkedPosition =
+                    if (!viewModel.kitchenOrdersForceRefresh.value.isNullOrEmpty()) {
+                        0
+                    } else {
+                        RecyclerView.NO_POSITION
+                    }
+            }
+        })
+
         viewModel.forceRefreshLoading.observe(this, Observer {
             binding.loadingSrl.isRefreshing = it
         })
@@ -108,6 +120,7 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
                 return@submitList
             }
 
+            ordersListAdapter.notifyItemChanged(ordersListAdapter.checkedPosition)
             val clickedOrder =
                 ordersListAdapter.currentList[ordersListAdapter.checkedPosition]
             onOrderListItemClicked(clickedOrder)
