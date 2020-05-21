@@ -5,7 +5,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.vladtruta.kitchenapp.R
@@ -68,7 +67,7 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
             errorSnackbar?.show()
         })
 
-        viewModel.finishErrorMessage.observe(this, Observer {
+        viewModel.finishOrderErrorMessage.observe(this, Observer {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
         })
 

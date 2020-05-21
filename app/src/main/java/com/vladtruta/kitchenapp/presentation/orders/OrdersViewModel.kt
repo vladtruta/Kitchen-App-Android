@@ -17,8 +17,8 @@ class OrdersViewModel : ViewModel() {
     private val _refreshErrorMessage = MutableLiveData<String>()
     val refreshErrorMessage: LiveData<String> = _refreshErrorMessage
 
-    private val _finishErrorMessage = MutableLiveData<String>()
-    val finishErrorMessage: LiveData<String> = _finishErrorMessage
+    private val _finishOrderErrorMessage = MutableLiveData<String>()
+    val finishOrderErrorMessage: LiveData<String> = _finishOrderErrorMessage
 
     private val _finishOrderSuccessful = MutableLiveData<Boolean>()
     val finishOrderSuccessful: LiveData<Boolean> = _finishOrderSuccessful
@@ -78,7 +78,7 @@ class OrdersViewModel : ViewModel() {
                 _finishOrderSuccessful.value = true
             } catch (error: Exception) {
                 _finishOrderSuccessful.value = false
-                _finishErrorMessage.value = error.message
+                _finishOrderErrorMessage.value = error.message
             } finally {
                 _finishButtonEnabled.value = true
             }
