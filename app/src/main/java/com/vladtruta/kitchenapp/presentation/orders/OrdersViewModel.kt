@@ -26,8 +26,8 @@ class OrdersViewModel : ViewModel() {
     private val _totalCourses = MutableLiveData<List<CartItem>>()
     val totalCourses: LiveData<List<CartItem>> = _totalCourses
 
-    private val _forceRefreshLoading = MutableLiveData(false)
-    val forceRefreshLoading: LiveData<Boolean> = _forceRefreshLoading
+    private val _refreshLoading = MutableLiveData(false)
+    val forceRefreshLoading: LiveData<Boolean> = _refreshLoading
 
     private val _finishButtonEnabled = MutableLiveData(true)
     val finishButtonEnabled: LiveData<Boolean> = _finishButtonEnabled
@@ -43,10 +43,10 @@ class OrdersViewModel : ViewModel() {
 
     fun triggerRefresh(): Job {
         return viewModelScope.launch {
-            _forceRefreshLoading.value = true
+            _refreshLoading.value = true
             val orders = fetchOrders()?.also { updateTotalCourses(it).join() }
             _kitchenOrders.value = orders
-            _forceRefreshLoading.value = false
+            _refreshLoading.value = false
         }
     }
 
