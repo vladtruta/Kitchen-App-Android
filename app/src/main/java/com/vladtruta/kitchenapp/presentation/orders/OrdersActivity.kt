@@ -1,6 +1,7 @@
 package com.vladtruta.kitchenapp.presentation.orders
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -39,8 +40,21 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
 
     private fun initObservers() {
         viewModel.kitchenOrders.observe(this, Observer {
-            ordersListAdapter.submitList(it)
-            viewModel.updateTotalCourses()
+            if (it.isNullOrEmpty()) {
+                binding.noOrdersTv.visibility = View.VISIBLE
+            } else {
+                binding.noOrdersTv.visibility = View.GONE
+                ordersListAdapter.submitList(it) {
+                    if (ordersListAdapter.itemCount == 0) {
+                        return@submitList
+                    }
+
+                    val clickedOrder =
+                        ordersListAdapter.currentList[ordersListAdapter.checkedPosition]
+                    onOrderListItemClicked(clickedOrder)
+                }
+                viewModel.updateTotalCourses()
+            }
         })
 
         viewModel.totalCourses.observe(this, Observer {
