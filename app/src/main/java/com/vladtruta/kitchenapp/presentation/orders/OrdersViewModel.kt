@@ -45,8 +45,9 @@ class OrdersViewModel : ViewModel() {
     fun triggerRefresh(): Job {
         return viewModelScope.launch {
             _forceRefreshLoading.value = true
-            val orders = fetchOrders() ?: emptyList<KitchenOrder>()
-            updateTotalCourses(orders).join()
+            val orders = fetchOrders()?.also {
+                updateTotalCourses(it).join()
+            }
             _kitchenOrdersForceRefresh.value = orders
             _forceRefreshLoading.value = false
         }
