@@ -74,12 +74,9 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
 
         viewModel.finishOrderSuccessful.observe(this, Observer {
             if (it == true) {
-                ordersListAdapter.checkedPosition =
-                    if (!viewModel.kitchenOrdersForceRefresh.value.isNullOrEmpty()) {
-                        0
-                    } else {
-                        RecyclerView.NO_POSITION
-                    }
+                if (!viewModel.kitchenOrdersForceRefresh.value.isNullOrEmpty()) {
+                    ordersListAdapter.checkedPosition = 0
+                }
             }
         })
 
@@ -117,10 +114,6 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
 
         ordersListAdapter.submitList(orders) {
             if (ordersListAdapter.itemCount == 0) {
-                return@submitList
-            }
-
-            if (ordersListAdapter.checkedPosition == RecyclerView.NO_POSITION) {
                 return@submitList
             }
 
