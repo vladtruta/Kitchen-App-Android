@@ -79,6 +79,6 @@ private class OrdersListDiffCallback : DiffUtil.ItemCallback<KitchenOrder>() {
     }
 
     override fun areContentsTheSame(oldItem: KitchenOrder, newItem: KitchenOrder): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem == newItem
     }
 }

@@ -1,14 +1,12 @@
 package com.vladtruta.kitchenapp.presentation.orders
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
-import com.vladtruta.kitchenapp.R
-import com.vladtruta.kitchenapp.databinding.ActivityOrdersBinding
 import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
+import com.vladtruta.kitchenapp.databinding.ActivityOrdersBinding
 import com.vladtruta.kitchenapp.presentation.orders.adapter.OrderDetailsAdapter
 import com.vladtruta.kitchenapp.presentation.orders.adapter.OrdersListAdapter
 import com.vladtruta.kitchenapp.presentation.orders.adapter.TotalCoursesAdapter
@@ -25,7 +23,7 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOrdersBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_orders)
+        setContentView(binding.root)
 
         initViews()
         initObservers()
@@ -34,16 +32,21 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
 
     private fun initViews() {
         ordersListAdapter = OrdersListAdapter(this)
+        binding.ordersListRv.adapter = ordersListAdapter
+
         orderDetailsAdapter = OrderDetailsAdapter()
+        binding.ordersDetailsRv.adapter = orderDetailsAdapter
+
         totalCoursesAdapter = TotalCoursesAdapter()
+        binding.coursesRv.adapter = totalCoursesAdapter
     }
 
     private fun initObservers() {
         viewModel.kitchenOrders.observe(this, Observer {
             if (it.isNullOrEmpty()) {
-                binding.noOrdersTv.visibility = View.VISIBLE
+             //   binding.noOrdersTv.visibility = View.VISIBLE
             } else {
-                binding.noOrdersTv.visibility = View.GONE
+               // binding.noOrdersTv.visibility = View.GONE
                 ordersListAdapter.submitList(it) {
                     if (ordersListAdapter.itemCount == 0) {
                         return@submitList
