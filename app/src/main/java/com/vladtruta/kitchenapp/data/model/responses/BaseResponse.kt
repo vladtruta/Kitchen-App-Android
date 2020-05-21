@@ -1,4 +1,4 @@
-package com.vladtruta.kitchenapp.model.responses
+package com.vladtruta.kitchenapp.data.model.responses
 
 import com.google.gson.annotations.SerializedName
 

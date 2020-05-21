@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vladtruta.kitchenapp.R
 import com.vladtruta.kitchenapp.databinding.ListItemOrderBinding
-import com.vladtruta.kitchenapp.model.local.KitchenOrder
+import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
 import com.vladtruta.kitchenapp.utils.UIUtils
 import com.vladtruta.kitchenapp.utils.setRipple
 

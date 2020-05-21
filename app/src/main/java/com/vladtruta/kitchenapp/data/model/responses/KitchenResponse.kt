@@ -1,8 +1,8 @@
-package com.vladtruta.kitchenapp.model.responses
+package com.vladtruta.kitchenapp.data.model.responses
 
 import com.google.gson.annotations.SerializedName
-import com.vladtruta.kitchenapp.model.local.CartItem
-import com.vladtruta.kitchenapp.model.local.KitchenOrder
+import com.vladtruta.kitchenapp.data.model.local.CartItem
+import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
 
 data class KitchenResponse(
     @SerializedName("cartItems")

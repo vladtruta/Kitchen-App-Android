@@ -1,7 +1,7 @@
 package com.vladtruta.kitchenapp.presentation.orders
 
 import androidx.lifecycle.*
-import com.vladtruta.kitchenapp.model.local.CartItem
+import com.vladtruta.kitchenapp.data.model.local.CartItem
 import com.vladtruta.kitchenapp.repository.RestaurantRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -17,7 +17,12 @@ class OrdersViewModel : ViewModel() {
 
     val kitchenOrders = liveData {
         while (true) {
-            emit(RestaurantRepository.refreshOrders())
+            try {
+                emit(RestaurantRepository.refreshOrders())
+            } catch (error: Exception) {
+                _errorMessage.postValue(error.message)
+            }
+
             delay(REFRESH_RETRY_DELAY_MS)
         }
     }

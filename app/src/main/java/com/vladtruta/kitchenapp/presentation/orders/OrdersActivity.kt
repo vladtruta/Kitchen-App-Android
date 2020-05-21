@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.vladtruta.kitchenapp.R
 import com.vladtruta.kitchenapp.databinding.ActivityOrdersBinding
-import com.vladtruta.kitchenapp.model.local.KitchenOrder
+import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
 import com.vladtruta.kitchenapp.presentation.orders.adapter.OrderDetailsAdapter
 import com.vladtruta.kitchenapp.presentation.orders.adapter.OrdersListAdapter
 import com.vladtruta.kitchenapp.presentation.orders.adapter.TotalCoursesAdapter

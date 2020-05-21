@@ -1,7 +1,7 @@
 package com.vladtruta.kitchenapp.repository
 
-import com.vladtruta.kitchenapp.model.local.KitchenOrder
-import com.vladtruta.kitchenapp.webservice.getNetwork
+import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
+import com.vladtruta.kitchenapp.data.model.webservice.getNetwork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -14,8 +14,12 @@ object RestaurantRepository {
     suspend fun refreshOrders(): List<KitchenOrder> {
         return withContext(Dispatchers.Default) {
             try {
-                val kitchenResponse = kitchenNetwork.refreshOrders()
-                kitchenResponse.data.mapNotNull { it.toKitchenOrder() }
+                val response = kitchenNetwork.refreshOrders()
+                if (response.success) {
+                    response.data.mapNotNull { it.toKitchenOrder() }
+                } else {
+                    throw Exception()
+                }
             } catch (error: Exception) {
                 throw Exception("Failed to refresh orders", error)
             }

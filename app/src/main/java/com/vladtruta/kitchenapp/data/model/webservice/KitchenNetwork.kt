@@ -1,4 +1,4 @@
-package com.vladtruta.kitchenapp.webservice
+package com.vladtruta.kitchenapp.data.model.webservice
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -12,7 +12,7 @@ fun getNetwork(): KitchenApi {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://localhost/")
+            .baseUrl("http://10.0.2.2:8080/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

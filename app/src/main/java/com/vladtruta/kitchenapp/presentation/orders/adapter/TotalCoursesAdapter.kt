@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vladtruta.kitchenapp.R
 import com.vladtruta.kitchenapp.databinding.ListItemCourseBinding
-import com.vladtruta.kitchenapp.model.local.CartItem
+import com.vladtruta.kitchenapp.data.model.local.CartItem
 import com.vladtruta.kitchenapp.utils.UIUtils
 
 class TotalCoursesAdapter :
