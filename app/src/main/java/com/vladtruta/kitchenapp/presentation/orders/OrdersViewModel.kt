@@ -20,18 +20,8 @@ class OrdersViewModel : ViewModel() {
     private val _finishOrderSuccessful = MutableLiveData<Boolean>()
     val finishOrderSuccessful: LiveData<Boolean> = _finishOrderSuccessful
 
-    val kitchenOrders = liveData {
-        while (true) {
-            val orders = fetchOrders()?.also {
-                updateTotalCourses(it).join()
-            }
-            emit(orders)
-            delay(REFRESH_RETRY_DELAY_MS)
-        }
-    }
-
-    private val _kitchenOrdersForceRefresh = MutableLiveData<List<KitchenOrder>>()
-    val kitchenOrdersForceRefresh: LiveData<List<KitchenOrder>> = _kitchenOrdersForceRefresh
+    private val _kitchenOrders = MutableLiveData<List<KitchenOrder>>()
+    val kitchenOrders: LiveData<List<KitchenOrder>> = _kitchenOrders
 
     private val _totalCourses = MutableLiveData<List<CartItem>>()
     val totalCourses: LiveData<List<CartItem>> = _totalCourses
@@ -42,13 +32,20 @@ class OrdersViewModel : ViewModel() {
     private val _finishButtonEnabled = MutableLiveData(true)
     val finishButtonEnabled: LiveData<Boolean> = _finishButtonEnabled
 
+    fun startContinuousRefresh() {
+        viewModelScope.launch {
+            while (true) {
+                triggerRefresh().join()
+                delay(REFRESH_RETRY_DELAY_MS)
+            }
+        }
+    }
+
     fun triggerRefresh(): Job {
         return viewModelScope.launch {
             _forceRefreshLoading.value = true
-            val orders = fetchOrders()?.also {
-                updateTotalCourses(it).join()
-            }
-            _kitchenOrdersForceRefresh.value = orders
+            val orders = fetchOrders()?.also { updateTotalCourses(it).join() }
+            _kitchenOrders.value = orders
             _forceRefreshLoading.value = false
         }
     }

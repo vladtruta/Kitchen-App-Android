@@ -33,6 +33,8 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
         initViews()
         initObservers()
         initActions()
+
+        viewModel.startContinuousRefresh()
     }
 
     private fun initViews() {
@@ -53,10 +55,6 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
             updateOrders(it)
         })
 
-        viewModel.kitchenOrdersForceRefresh.observe(this, Observer {
-            updateOrders(it)
-        })
-
         viewModel.totalCourses.observe(this, Observer {
             totalCoursesAdapter.submitList(it)
         })
@@ -73,7 +71,7 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
 
         viewModel.finishOrderSuccessful.observe(this, Observer {
             if (it == true) {
-                if (!viewModel.kitchenOrdersForceRefresh.value.isNullOrEmpty()) {
+                if (!viewModel.kitchenOrders.value.isNullOrEmpty()) {
                     ordersListAdapter.checkedPosition = 0
                 }
             }
