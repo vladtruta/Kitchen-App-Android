@@ -22,8 +22,9 @@ class OrdersViewModel : ViewModel() {
 
     val kitchenOrders = liveData {
         while (true) {
-            val orders = fetchOrders() ?: emptyList<KitchenOrder>()
-            updateTotalCourses(orders).join()
+            val orders = fetchOrders()?.also {
+                updateTotalCourses(it).join()
+            }
             emit(orders)
             delay(REFRESH_RETRY_DELAY_MS)
         }
