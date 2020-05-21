@@ -120,6 +120,10 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
                 return@submitList
             }
 
+            if (ordersListAdapter.checkedPosition == RecyclerView.NO_POSITION) {
+                return@submitList
+            }
+
             ordersListAdapter.notifyItemChanged(ordersListAdapter.checkedPosition)
             val clickedOrder =
                 ordersListAdapter.currentList[ordersListAdapter.checkedPosition]
