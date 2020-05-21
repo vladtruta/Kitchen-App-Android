@@ -1,10 +1,13 @@
 package com.vladtruta.kitchenapp.presentation.orders
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.vladtruta.kitchenapp.R
 import com.vladtruta.kitchenapp.data.model.local.KitchenOrder
 import com.vladtruta.kitchenapp.databinding.ActivityOrdersBinding
 import com.vladtruta.kitchenapp.presentation.orders.adapter.OrderDetailsAdapter
@@ -19,6 +22,8 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
     private lateinit var ordersListAdapter: OrdersListAdapter
     private lateinit var orderDetailsAdapter: OrderDetailsAdapter
     private lateinit var totalCoursesAdapter: TotalCoursesAdapter
+
+    private var errorSnackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,41 +44,104 @@ class OrdersActivity : AppCompatActivity(), OrdersListAdapter.OrdersListListener
 
         totalCoursesAdapter = TotalCoursesAdapter()
         binding.coursesRv.adapter = totalCoursesAdapter
+
+        binding.finishEfab.hide()
     }
 
     private fun initObservers() {
         viewModel.kitchenOrders.observe(this, Observer {
-            if (it.isNullOrEmpty()) {
-             //   binding.noOrdersTv.visibility = View.VISIBLE
-            } else {
-               // binding.noOrdersTv.visibility = View.GONE
-                ordersListAdapter.submitList(it) {
-                    if (ordersListAdapter.itemCount == 0) {
-                        return@submitList
-                    }
+            updateOrders(it)
+        })
 
-                    val clickedOrder =
-                        ordersListAdapter.currentList[ordersListAdapter.checkedPosition]
-                    onOrderListItemClicked(clickedOrder)
-                }
-                viewModel.updateTotalCourses()
-            }
+        viewModel.kitchenOrdersForceRefresh.observe(this, Observer {
+            updateOrders(it)
         })
 
         viewModel.totalCourses.observe(this, Observer {
             totalCoursesAdapter.submitList(it)
         })
 
-        viewModel._errorMessage.observe(this, Observer {
-            Snackbar.make(binding.root, it, Snackbar.LENGTH_INDEFINITE).show()
+        viewModel.errorMessage.observe(this, Observer {
+            errorSnackbar = Snackbar.make(binding.finishEfab, it, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.refresh) { viewModel.triggerRefresh() }
+            errorSnackbar?.show()
+        })
+
+        viewModel.forceRefreshLoading.observe(this, Observer {
+            binding.loadingSrl.isRefreshing = it
+        })
+
+        viewModel.finishButtonEnabled.observe(this, Observer {
+            binding.finishEfab.isEnabled = it
         })
     }
 
-    private fun initActions() {
+    private fun updateOrders(orders: List<KitchenOrder>?) {
+        if (orders == null) {
+            return
+        } else {
+            errorSnackbar?.dismiss()
+            errorSnackbar = null
+        }
 
+        if (orders.isEmpty()) {
+            binding.noOrdersTv.visibility = View.VISIBLE
+            binding.ordersListRv.visibility = View.GONE
+            binding.ordersDetailsRv.visibility = View.GONE
+            binding.coursesRv.visibility = View.GONE
+            binding.finishEfab.hide()
+        } else {
+            binding.noOrdersTv.visibility = View.GONE
+            binding.ordersListRv.visibility = View.VISIBLE
+            binding.ordersDetailsRv.visibility = View.VISIBLE
+            binding.coursesRv.visibility = View.VISIBLE
+            binding.finishEfab.show()
+        }
+
+        ordersListAdapter.submitList(orders) {
+            if (ordersListAdapter.itemCount == 0) {
+                return@submitList
+            }
+
+            val clickedOrder =
+                ordersListAdapter.currentList[ordersListAdapter.checkedPosition]
+            onOrderListItemClicked(clickedOrder)
+        }
+        viewModel.updateTotalCourses()
+    }
+
+    private fun initActions() {
+        binding.loadingSrl.setOnRefreshListener {
+            viewModel.triggerRefresh()
+        }
+
+        binding.ordersMtb.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_refresh -> {
+                    viewModel.triggerRefresh()
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
+        binding.finishEfab.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.finish_order)
+                .setMessage(R.string.finish_order_message).setPositiveButton(R.string.ok) { _, _ ->
+                    val clickedOrder =
+                        ordersListAdapter.currentList[ordersListAdapter.checkedPosition]
+                    viewModel.finishOrder(clickedOrder)
+                }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .show()
+        }
     }
 
     override fun onOrderListItemClicked(kitchenOrder: KitchenOrder) {
+        binding.finishEfab.show()
         orderDetailsAdapter.submitList(kitchenOrder.cartItems)
     }
 }

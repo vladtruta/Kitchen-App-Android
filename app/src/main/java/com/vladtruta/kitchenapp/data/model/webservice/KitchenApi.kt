@@ -9,7 +9,6 @@ interface KitchenApi {
     @GET("kitchen")
     suspend fun refreshOrders(): BaseResponse<List<KitchenResponse>>
 
-    @DELETE("order")
-    suspend fun deleteOrderById(@Field("id") id: Int)
-
+    @DELETE("kitchen/{id}")
+    suspend fun deleteOrderById(@Path("id") id: Int): BaseResponse<Any>
 }

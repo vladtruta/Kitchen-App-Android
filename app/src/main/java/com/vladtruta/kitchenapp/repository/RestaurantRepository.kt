@@ -21,16 +21,19 @@ object RestaurantRepository {
                     throw Exception()
                 }
             } catch (error: Exception) {
-                throw Exception("Failed to refresh orders", error)
+                throw Exception("Failed to fetch new orders", error)
             }
         }
     }
 
     suspend fun deleteOrder(kitchenOrder: KitchenOrder) {
         try {
-            kitchenNetwork.deleteOrderById(kitchenOrder.id)
+            val response = kitchenNetwork.deleteOrderById(kitchenOrder.id)
+            if (!response.success) {
+                throw Exception()
+            }
         } catch (error: Exception) {
-            throw Exception("Failed to delete order having id ${kitchenOrder.id}", error)
+            throw Exception("Failed to delete order #${kitchenOrder.id}", error)
         }
     }
 

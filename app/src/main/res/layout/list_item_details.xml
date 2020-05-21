@@ -28,10 +28,10 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/course_name_tv"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:lines="2"
+                android:gravity="center"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:textAppearance="?attr/textAppearanceHeadline4"
@@ -41,7 +41,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/course_quantity_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="80dp"
                 android:background="?attr/colorSecondary"
                 android:gravity="center"
                 android:maxLines="1"

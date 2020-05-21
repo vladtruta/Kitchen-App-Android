@@ -49,6 +49,9 @@ buildscript {
 
                 // AppCompat
                 "androidx.appcompat:appcompat:$appcompat_version",
+
+                // SwipeRefreshLayout
+                "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
         ]
 
         librariesKapt = [
